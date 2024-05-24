@@ -75,17 +75,10 @@
         <div id="hoverInfo"></div>
     </div>
     <script>
-		const MAP_SCALE = 1.8;
-        const canvas = document.getElementById('orchardCanvas');
-        const ctx = canvas.getContext('2d');
-        const treeDetailsDiv = document.getElementById('treeDetails');
-        const hoverInfoDiv = document.getElementById('hoverInfo');
-        const googleForm = document.getElementById('googleForm');
-		
-		class Tree {
+        class Tree {
             constructor(x, y, id, cultivar, rootstock, notes, nickname = '') {
-                this.x = canvas.width-x*MAP_SCALE-30;
-                this.y = (y+40)*MAP_SCALE;
+                this.x = x;
+                this.y = y;
                 this.id = id;
                 this.cultivar = cultivar;
                 this.rootstock = rootstock;
@@ -97,15 +90,21 @@
                 return this.notes;
             }
         }
-		
+
+        const canvas = document.getElementById('orchardCanvas');
+        const ctx = canvas.getContext('2d');
+        const treeDetailsDiv = document.getElementById('treeDetails');
+        const hoverInfoDiv = document.getElementById('hoverInfo');
+        const googleForm = document.getElementById('googleForm');
         let trees = [];
+        let selectedTreeId = null;
 
         function drawTrees() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'green';
             trees.forEach(tree => {
                 ctx.beginPath();
-                ctx.arc(tree.x, tree.y, 5, 0, Math.PI * 2);
+                ctx.arc(tree.x, tree.y, tree.id === selectedTreeId ? 7 : 5, 0, Math.PI * 2);
+                ctx.fillStyle = tree.id === selectedTreeId ? 'red' : 'green';
                 ctx.fill();
             });
         }
@@ -124,6 +123,7 @@
         }
 
         function displayTreeDetails(tree) {
+            selectedTreeId = tree.id;
             treeDetailsDiv.innerHTML = `
                 <strong>Tree ID:</strong> ${tree.id}<br>
                 <strong>Nickname:</strong> ${tree.nickname}<br>
@@ -132,6 +132,7 @@
                 <strong>Notes:</strong> ${tree.getNotes()}
             `;
             updateGoogleForm(tree.id);
+            drawTrees();
         }
 
         function showHoverInfo(tree, x, y) {
@@ -160,7 +161,7 @@
         function fetchTreeData() {
             const sheetId = '1mhKGDDzsK3mj2JOKjMg5knaIQE-ZaWAg5LLgogw7wXw';
             const sheetRange = 'Sheet1!A2:G';
-			const apiKey = 'AIzaSyBs9Du6hrji1fMUaUcbAy7nviu7EssKkV0';
+            const apiKey = 'AIzaSyBs9Du6hrji1fMUaUcbAy7nviu7EssKkV0';
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetRange}?key=${apiKey}`;
 
             fetch(url)

@@ -226,7 +226,7 @@
                 <p><strong>Cultivar:</strong> ${tree.cultivar}</p>
                 <p><strong>Rootstock:</strong> ${tree.rootstock}</p>
                 <p><strong>Grade:</strong> ${tree.grade}</p>
-                <h2>Notes</h2>
+                ${notesHTML ? "<h2>Notes</h2>": ""}
                 ${notesHTML}
             `;
             noteFormContainer.style.display = 'none'; // Hide note form initially

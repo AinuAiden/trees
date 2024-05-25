@@ -157,21 +157,31 @@
         const noteFormContainer = document.getElementById('noteFormContainer');
         const makeNoteButton = document.getElementById('makeNoteButton');
         let trees = [];
+        let notes = [];
         let selectedTreeId = null;
 
         class Tree {
-            constructor(x, y, id, cultivar, rootstock, notes, nickname = '') {
+            constructor(x, y, id, cultivar, rootstock, grade, nickname = '') {
                 this.x = canvas.width - (x * MAP_SCALE + PADDING);
                 this.y = (y + 30) * MAP_SCALE + PADDING;
                 this.id = id;
                 this.cultivar = cultivar;
                 this.rootstock = rootstock;
-                this.notes = notes;
+                this.grade = grade;
                 this.nickname = nickname;
             }
 
             getNotes() {
-                return this.notes;
+                return notes.filter(note => note.id==this.id).map(note => note.note);
+            }
+        }
+
+        class Note {
+            constructor(time, user, id, note) {
+                this.time = time;
+                this.user=user;
+                this.id=id;
+                this.note=note;
             }
         }
 
@@ -202,9 +212,9 @@
             selectedTreeId = tree.id;
             treeDetailsDiv.innerHTML = `
                 <h2>${tree.cultivar} [${tree.id}]</h2>
-                <p><strong>Nickname:</strong> ${tree.nickname}</p>
                 <p><strong>Cultivar:</strong> ${tree.cultivar}</p>
                 <p><strong>Rootstock:</strong> ${tree.rootstock}</p>
+                <p><strong>Grade:</strong> ${tree.grade}</p>
                 <p><strong>Notes:</strong> ${tree.getNotes()}</p>
             `;
             noteFormContainer.style.display = 'none'; // Hide note form initially
@@ -218,9 +228,9 @@
             hoverInfoDiv.style.top = `${y + 10}px`;
             hoverInfoDiv.innerHTML = `
                 <strong>Tree ID:</strong> ${tree.id}<br>
-                <strong>Nickname:</strong> ${tree.nickname}<br>
                 <strong>Cultivar:</strong> ${tree.cultivar}<br>
-                <strong>Rootstock:</strong> ${tree.rootstock}
+                <strong>Rootstock:</strong> ${tree.rootstock}<br>
+                <strong>Grade:</strong> ${tree.grade}
             `;
         }
 
@@ -257,9 +267,29 @@
                         row[6] || ''
                     ));
                     drawTrees();
+                    fetchNotes();
                     initialize();
                 })
-                .catch(error => console.error('Error loading the Google Sheet:', error));
+                .catch(error => console.error('Error loading trees:', error));
+        }
+
+        function fetchNotes() {
+            const sheetId = '1dH1oBXTx4CtOVU8jE7PhWrfM7iSyzekNAeW7QaOXcFc';
+            const sheetRange = 'notes!A2:D';
+            const apiKey = 'AIzaSyBs9Du6hrji1fMUaUcbAy7nviu7EssKkV0';
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetRange}?key=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    notes = data.values.map(row => new Note(
+                        row[0],
+                        row[1],
+                        row[2],
+                        row[3] || ''
+                    ));
+                })
+                .catch(error => console.error('Error loading notes:', error));
         }
 
         function initialize() {

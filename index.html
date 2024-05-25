@@ -90,7 +90,7 @@
             width: 80%;
             transition: all 0.5s;
             cursor: pointer;
-            margin: auto; 
+            margin: auto;
         }
 
         .button span {
@@ -172,16 +172,16 @@
             }
 
             getNotes() {
-                return notes.filter(note => note.id==this.id).map(note => note.note);
+                return notes.filter(note => note.id == this.id);
             }
         }
 
         class Note {
             constructor(time, user, id, note) {
                 this.time = time;
-                this.user=user;
-                this.id=id;
-                this.note=note;
+                this.user = user;
+                this.id = id;
+                this.note = note;
             }
         }
 
@@ -208,14 +208,26 @@
             return distance <= 5;
         }
 
+        function getNoteHTML(note) {
+            return `
+                <strong>${note.time} - ${note.user}</strong>
+                <p>${note.note}</p>
+            `;
+        }
+
         function displayTreeDetails(tree) {
             selectedTreeId = tree.id;
+
+            let notesHTML = "";
+            tree.getNotes().forEach(note => notesHTML += getNoteHTML(note));
+
             treeDetailsDiv.innerHTML = `
                 <h2>${tree.cultivar} [${tree.id}]</h2>
                 <p><strong>Cultivar:</strong> ${tree.cultivar}</p>
                 <p><strong>Rootstock:</strong> ${tree.rootstock}</p>
                 <p><strong>Grade:</strong> ${tree.grade}</p>
-                <p><strong>Notes:</strong> ${tree.getNotes()}</p>
+                <h2>Notes</h2>
+                ${notesHTML}
             `;
             noteFormContainer.style.display = 'none'; // Hide note form initially
             makeNoteButton.style.display = 'block';

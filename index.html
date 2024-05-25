@@ -75,10 +75,17 @@
         <div id="hoverInfo"></div>
     </div>
     <script>
+        const canvas = document.getElementById('orchardCanvas');
+        const ctx = canvas.getContext('2d');
+        const treeDetailsDiv = document.getElementById('treeDetails');
+        const hoverInfoDiv = document.getElementById('hoverInfo');
+        const googleForm = document.getElementById('googleForm');
+        const MAP_SCALE = 2;
+
         class Tree {
             constructor(x, y, id, cultivar, rootstock, notes, nickname = '') {
-                this.x = x;
-                this.y = y;
+                this.x = canvas.width-(x*MAP_SCALE);
+                this.y = (y+30)*MAP_SCALE;
                 this.id = id;
                 this.cultivar = cultivar;
                 this.rootstock = rootstock;
@@ -91,11 +98,6 @@
             }
         }
 
-        const canvas = document.getElementById('orchardCanvas');
-        const ctx = canvas.getContext('2d');
-        const treeDetailsDiv = document.getElementById('treeDetails');
-        const hoverInfoDiv = document.getElementById('hoverInfo');
-        const googleForm = document.getElementById('googleForm');
         let trees = [];
         let selectedTreeId = null;
 

@@ -161,14 +161,18 @@
         let selectedTreeId = null;
 
         class Tree {
-            constructor(x, y, id, cultivar, rootstock, grade, nickname = '') {
+            constructor(x, y, id, cultivar, rootstock, grade, grafter, graftType, grafteDate, nurseryDate, graftComment) {
                 this.x = canvas.width - (x * MAP_SCALE + PADDING);
                 this.y = (y + 30) * MAP_SCALE + PADDING;
                 this.id = id;
                 this.cultivar = cultivar;
                 this.rootstock = rootstock;
                 this.grade = grade;
-                this.nickname = nickname;
+                this.grafter = grafter;
+                this.graftType = graftType;
+                this.grafteDate = grafteDate;
+                this.nurseryDate = nurseryDate;
+                this.graftComment = graftComment;
             }
 
             getNotes() {
@@ -226,6 +230,11 @@
                 <p><strong>Cultivar:</strong> ${tree.cultivar}</p>
                 <p><strong>Rootstock:</strong> ${tree.rootstock}</p>
                 <p><strong>Grade:</strong> ${tree.grade}</p>
+                <h2>Graft Notes</h2>
+                <p><strong>Grafter:</strong> ${tree.grafter}</p>
+                <p><strong>Date:</strong> ${tree.grafteDate}</p>
+                <p><strong>Type:</strong> ${tree.graftType}</p>
+                ${tree.graftComment ? "<p><strong>Comment:</strong>"+tree.graftComment+"</p>": ""}
                 ${notesHTML ? "<h2>Notes</h2>": ""}
                 ${notesHTML}
             `;
@@ -261,8 +270,8 @@
 
 
         function fetchTreeData() {
-            const sheetId = '1mhKGDDzsK3mj2JOKjMg5knaIQE-ZaWAg5LLgogw7wXw';
-            const sheetRange = 'Sheet1!A2:G';
+            const sheetId = '1boH22hYT8um6i3UyCf33GHJVZmnFic-k5TZsQmfNrHY';
+            const sheetRange = 'map!A2:K';
             const apiKey = 'AIzaSyBs9Du6hrji1fMUaUcbAy7nviu7EssKkV0';
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetRange}?key=${apiKey}`;
 
@@ -276,7 +285,12 @@
                         row[3],
                         row[4],
                         row[5],
-                        row[6] || ''
+                        row[6],
+                        row[7],
+                        row[8],
+                        row[9],
+                        row[10],
+                        row[11] || ''
                     ));
                     drawTrees();
                     fetchNotes();

@@ -14,19 +14,27 @@
             align-items: center;
             background-color: #E4F3E5;
         }
-        #treeDetails {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
+        #container {
+            display: flex;
+            justify-content: space-between;
             width: 100%;
-            max-width: 800px;
+            max-width: 1200px;
+        }
+        #treeDetails {
+            padding: 15px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: calc(50% - 20px);
             text-align: left;
+        }
+        #treeDetails strong {
+            color: #2c7a7b;
         }
         #formContainer {
             margin-bottom: 20px;
-            width: 100%;
-            max-width: 800px;
+            width: 50%;
         }
         #formContainer iframe {
             width: 100%;
@@ -34,15 +42,11 @@
         }
         #canvasContainer {
             position: relative;
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            max-width: 800px;
+            width: calc(50%);
         }
         #orchardCanvas {
             width: 100%;
             height: auto;
-            border: 1px solid #000;
         }
         #hoverInfo {
             position: absolute;
@@ -56,6 +60,10 @@
             body {
                 padding: 10px;
             }
+            #treeDetails, #canvasContainer {
+                width: 100%;
+                margin-bottom: 20px;
+            }
             #treeDetails {
                 font-size: 14px;
             }
@@ -66,26 +74,31 @@
     </style>
 </head>
 <body>
-    <div id="treeDetails"></div>
-    <div id="formContainer">
-        <iframe id="googleForm" src="" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <div id="container">
+        <div id="treeDetails"></div>
+        <div id="canvasContainer">
+            <canvas id="orchardCanvas" width="250" height="500"></canvas>
+            <div id="hoverInfo"></div>
+        </div>
     </div>
-    <div id="canvasContainer">
-        <canvas id="orchardCanvas" width="800" height="600"></canvas>
-        <div id="hoverInfo"></div>
+    <div id="formContainer">
+        <iframe id="googleForm" src="" frameborder="0" marginheight="0" marginwidth="0" tabindex="-1">Loading…</iframe>
     </div>
     <script>
+        const MAP_SCALE = 1.4;
+        const PADDING = 40;
         const canvas = document.getElementById('orchardCanvas');
         const ctx = canvas.getContext('2d');
         const treeDetailsDiv = document.getElementById('treeDetails');
         const hoverInfoDiv = document.getElementById('hoverInfo');
         const googleForm = document.getElementById('googleForm');
-        const MAP_SCALE = 2;
+        let trees = [];
+        let selectedTreeId = null;
 
         class Tree {
             constructor(x, y, id, cultivar, rootstock, notes, nickname = '') {
-                this.x = canvas.width-(x*MAP_SCALE);
-                this.y = (y+30)*MAP_SCALE;
+                this.x = canvas.width - (x * MAP_SCALE + PADDING);
+                this.y = (y + 30) * MAP_SCALE + PADDING;
                 this.id = id;
                 this.cultivar = cultivar;
                 this.rootstock = rootstock;
@@ -97,9 +110,6 @@
                 return this.notes;
             }
         }
-
-        let trees = [];
-        let selectedTreeId = null;
 
         function drawTrees() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -114,8 +124,8 @@
         function getMousePos(canvas, evt) {
             const rect = canvas.getBoundingClientRect();
             return {
-                x: evt.clientX - rect.left,
-                y: evt.clientY - rect.top
+                x: (evt.clientX - rect.left) * (canvas.width / rect.width),
+                y: (evt.clientY - rect.top) * (canvas.height / rect.height)
             };
         }
 
@@ -127,11 +137,11 @@
         function displayTreeDetails(tree) {
             selectedTreeId = tree.id;
             treeDetailsDiv.innerHTML = `
-                <strong>Tree ID:</strong> ${tree.id}<br>
-                <strong>Nickname:</strong> ${tree.nickname}<br>
-                <strong>Cultivar:</strong> ${tree.cultivar}<br>
-                <strong>Rootstock:</strong> ${tree.rootstock}<br>
-                <strong>Notes:</strong> ${tree.getNotes()}
+                <h2>${tree.cultivar} [${tree.id}]</h2>
+                <p><strong>Nickname:</strong> ${tree.nickname}</p>
+                <p><strong>Cultivar:</strong> ${tree.cultivar}</p>
+                <p><strong>Rootstock:</strong> ${tree.rootstock}</p>
+                <p><strong>Notes:</strong> ${tree.getNotes()}</p>
             `;
             updateGoogleForm(tree.id);
             drawTrees();
@@ -157,8 +167,11 @@
 
         function updateGoogleForm(treeId) {
             const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSd4n5wpalR97KiW5ppOsb1fnqSRI2W4B_VH4x_y8y0F36UaQg/viewform?embedded=true&usp=pp_url&entry.1147721308=${treeId}`;
-            googleForm.src = formUrl;
+            if (googleForm.src !== formUrl) {
+                googleForm.src = formUrl;
+            }
         }
+
 
         function fetchTreeData() {
             const sheetId = '1mhKGDDzsK3mj2JOKjMg5knaIQE-ZaWAg5LLgogw7wXw';

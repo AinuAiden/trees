@@ -20,24 +20,15 @@
             width: 100%;
             max-width: 1200px;
         }
-        #treeDetails {
-            padding: 15px;
-            border: 1px solid #ccc;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: calc(50% - 20px);
-            text-align: left;
-        }
-        #treeDetails strong {
+        #treeContainer strong {
             color: #2c7a7b;
         }
-        #formContainer {
+        #noteFormContainer {
             margin-bottom: 20px;
             width: 100%;
         }
-        #formContainer iframe {
-            width: 100%;
+        #noteFormContainer iframe {
+            width: 573px;
             height: 573px;
         }
         #canvasContainer {
@@ -60,12 +51,19 @@
             body {
                 padding: 10px;
             }
-            #treeDetails, #canvasContainer {
+            #treeContainer, #canvasContainer {
                 width: 100%;
                 margin-bottom: 20px;
             }
-            #treeDetails {
+            #treeContainer {
                 font-size: 14px;
+                padding: 15px;
+                border: 1px solid #ccc;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                text-align: left;
+                width: 100%;
             }
             #hoverInfo {
                 font-size: 12px;
@@ -75,14 +73,17 @@
 </head>
 <body>
     <div id="container">
-        <div id="treeDetails"></div>
+        <div id="treeContainer">
+            <div id="treeDetails"></div>
+            <button id="makeNoteButton">Make a note</button>
+            <div id="noteFormContainer">
+                <iframe id="googleForm" src="" frameborder="0" marginheight="0" marginwidth="0" tabindex="-1">Loading…</iframe>
+            </div>
+        </div>
         <div id="canvasContainer">
             <canvas id="orchardCanvas" width="250" height="500"></canvas>
             <div id="hoverInfo"></div>
         </div>
-    </div>
-    <div id="formContainer">
-        <iframe id="googleForm" src="" frameborder="0" marginheight="0" marginwidth="0" tabindex="-1">Loading…</iframe>
     </div>
     <script>
         const MAP_SCALE = 1.4;
@@ -92,6 +93,8 @@
         const treeDetailsDiv = document.getElementById('treeDetails');
         const hoverInfoDiv = document.getElementById('hoverInfo');
         const googleForm = document.getElementById('googleForm');
+        const noteFormContainer = document.getElementById('noteFormContainer');
+        const makeNoteButton = document.getElementById('makeNoteButton');
         let trees = [];
         let selectedTreeId = null;
 
@@ -143,7 +146,8 @@
                 <p><strong>Rootstock:</strong> ${tree.rootstock}</p>
                 <p><strong>Notes:</strong> ${tree.getNotes()}</p>
             `;
-            updateGoogleForm(tree.id);
+            noteFormContainer.style.display = 'none'; // Hide note form initially
+            makeNoteButton.style.display = 'block'; 
             drawTrees();
         }
 
@@ -230,6 +234,12 @@
                 displayTreeDetails(clickedTree);
                 updateURLParameter(clickedTree.id);
             }
+        });
+
+        makeNoteButton.addEventListener('click', function() {
+            noteFormContainer.style.display = 'block'; // Show note form on button click
+            makeNoteButton.style.display = 'none'; 
+            updateGoogleForm(selectedTreeId); // Load form for the selected tree
         });
 
         fetchTreeData();

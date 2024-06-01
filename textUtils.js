@@ -1,21 +1,26 @@
 // textUtils.js
 
-function wrapText(context, text, x, y, maxWidth, lineHeight) {
-    var words = text.split(' ');
-    var line = '';
+function wrapText(context, text, x, y, maxChars, lineHeight) {
+    var lines = splitTextIntoLines(text, maxChars);
 
-    for(var n = 0; n < words.length; n++) {
-        var testLine = line + words[n] + ' ';
-        var metrics = context.measureText(testLine);
-        var testWidth = metrics.width;
-        if (testWidth > maxWidth && n > 0) {
-            context.fillText(line, x, y);
-            line = words[n] + ' ';
-            y += lineHeight;
-        }
-        else {
-            line = testLine;
+    for (var i = 0; i < lines.length; i++) {
+        context.fillText(lines[i], x, y + (i * lineHeight));
+    }
+}
+
+function splitTextIntoLines(text, maxChars) {
+    var words = text.split(' ');
+    var lines = [];
+    var currentLine = words[0];
+
+    for (var i = 1; i < words.length; i++) {
+        if (currentLine.length + words[i].length + 1 > maxChars) {
+            lines.push(currentLine);
+            currentLine = words[i];
+        } else {
+            currentLine += ' ' + words[i];
         }
     }
-    context.fillText(line, x, y);
+    lines.push(currentLine);
+    return lines;
 }

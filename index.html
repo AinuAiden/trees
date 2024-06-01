@@ -82,7 +82,12 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             trees.forEach(tree => {
                 ctx.beginPath();
-                ctx.arc(tree.x, tree.y, tree.id === selectedTreeId ? 15 : 10, 0, Math.PI * 2);
+                let markerSize = tree.id === selectedTreeId ? 15 : 10
+                if (tree.cultivar) {
+                    ctx.arc(tree.x, tree.y, markerSize, 0, Math.PI * 2);
+                } else {
+                    ctx.rect(tree.x - markerSize/2, tree.y - markerSize/2, markerSize, markerSize);
+                }
                 ctx.fillStyle = 'green';
                 if (tree.grade.includes("oot")) {
                     ctx.fillStyle = 'yellow';
@@ -126,7 +131,7 @@
 
         function isPointInTree(x, y, tree) {
             const distance = Math.sqrt((x - tree.x) ** 2 + (y - tree.y) ** 2);
-            return distance <= 20;
+            return distance <= 25;
         }
 
         function getNoteHTML(note) {

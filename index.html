@@ -7,6 +7,11 @@
     <title>Orchard</title>
     <link rel="icon" type="image/x-icon" href="golden-apple.png">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Maitree:wght@200;300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
@@ -23,7 +28,7 @@
                     tabindex="-1">Loading…</iframe>
             </div>
         </div>
-       
+
     </div>
     <script src="textUtils.js"></script>
     <script>
@@ -54,8 +59,8 @@
                 this.nurseryDate = nurseryDate;
                 this.graftComment = graftComment;
 
-                if(this.cultivar==="#N/A"){
-                    this.cultivar="";
+                if (this.cultivar === "#N/A") {
+                    this.cultivar = "";
                 }
             }
 
@@ -91,7 +96,7 @@
                 ctx.fill();
 
                 ctx.save(); // Save the current state of the context
-                ctx.translate(tree.x-5, tree.y); // Move the origin to the tree's position
+                ctx.translate(tree.x - 5, tree.y); // Move the origin to the tree's position
                 ctx.rotate(Math.PI / 4); // Rotate the context by 45 degrees
                 ctx.font = '12px Verdana, sans-serif';
                 if (tree.id === selectedTreeId) {
@@ -101,13 +106,13 @@
 
                 // Draw the tree name next to the dot.
                 wrapText(ctx, tree.cultivar, 0, 0, 80, 11);
-                
+
                 ctx.restore(); // Restore the context to its state before we moved the origin and rotated it
-                
+
                 if (tree.id === selectedTreeId) {
                     ctx.fillStyle = 'black';
                     ctx.font = '16px Verdana, sans-serif';
-                    ctx.fillText("ID: "+tree.id, canvas.width-100, 16);
+                    ctx.fillText("ID: " + tree.id, canvas.width - 100, 16);
                 }
             });
         }
@@ -126,8 +131,10 @@
 
         function getNoteHTML(note) {
             return `
-                <strong>${note.time} - ${note.user}</strong>
-                <p>${note.note}</p>
+                <p>
+                    <strong>${note.time} - ${note.user}</strong><br>
+                    ${note.note}
+                </p>
             `;
         }
 
@@ -139,14 +146,14 @@
 
             treeDetailsDiv.innerHTML = `
                 <h2>${tree.cultivar} [${tree.id}]</h2>
-                <p><strong>Cultivar:</strong> ${tree.cultivar}</p>
-                <p><strong>Rootstock:</strong> ${tree.rootstock}</p>
-                <p><strong>Grade:</strong> ${tree.grade}</p>
-                <h2>Graft Notes</h2>
-                <p><strong>Grafter:</strong> ${tree.grafter}</p>
-                <p><strong>Date:</strong> ${tree.grafteDate}</p>
-                <p><strong>Type:</strong> ${tree.graftType}</p>
-                ${tree.graftComment ? "<p><strong>Comment:</strong>" + tree.graftComment + "</p>" : ""}
+                <p><strong>Cultivar:</strong> ${tree.cultivar}<br>
+                <strong>Rootstock:</strong> ${tree.rootstock}<br>
+                <strong>Grade:</strong> ${tree.grade}<br>
+                <strong>Grafter:</strong> ${tree.grafter}<br>
+                <strong>Date:</strong> ${tree.grafteDate}<br>
+                <strong>Type:</strong> ${tree.graftType}<br>
+                ${tree.graftComment ? "<strong>Comment:</strong>" + tree.graftComment + "<br>" : ""}
+                </p>
                 ${notesHTML ? "<h2>Notes</h2>" : ""}
                 ${notesHTML}
             `;
@@ -157,8 +164,8 @@
 
         function showHoverInfo(tree, x, y) {
             hoverInfoDiv.style.display = 'block';
-            hoverInfoDiv.style.left = `${x-100}px`;
-            hoverInfoDiv.style.top = `${y*1.2-100}px`;
+            hoverInfoDiv.style.left = `${x - 100}px`;
+            hoverInfoDiv.style.top = `${y * 1.2 - 100}px`;
             hoverInfoDiv.innerHTML = `
                 <strong>Tree ID:</strong> ${tree.id}<br>
                 <strong>Cultivar:</strong> ${tree.cultivar}<br>

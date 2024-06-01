@@ -12,7 +12,7 @@
 <body>
     <div id="container">
         <div id="canvasContainer">
-            <canvas id="orchardCanvas" width="500" height="1000"></canvas>
+            <canvas id="orchardCanvas" width="500" height="1100"></canvas>
             <div id="hoverInfo"></div>
         </div>
         <div id="treeContainer">
@@ -27,8 +27,8 @@
     </div>
     <script src="textUtils.js"></script>
     <script>
-        const MAP_SCALE = 2.8;
-        const PADDING = 40;
+        const MAP_SCALE = 3.3;
+        const PADDING = 60;
         const canvas = document.getElementById('orchardCanvas');
         const ctx = canvas.getContext('2d');
         const treeDetailsDiv = document.getElementById('treeDetails');
@@ -43,7 +43,7 @@
         class Tree {
             constructor(x, y, id, cultivar, rootstock, grade, grafter, graftType, grafteDate, nurseryDate, graftComment) {
                 this.x = canvas.width - (x * MAP_SCALE + PADDING);
-                this.y = (y + 30) * MAP_SCALE + PADDING;
+                this.y = (y + 30) * MAP_SCALE;
                 this.id = id;
                 this.cultivar = cultivar;
                 this.rootstock = rootstock;
@@ -93,7 +93,7 @@
                 ctx.save(); // Save the current state of the context
                 ctx.translate(tree.x-5, tree.y); // Move the origin to the tree's position
                 ctx.rotate(Math.PI / 4); // Rotate the context by 45 degrees
-                ctx.font = '10px Verdana, sans-serif';
+                ctx.font = '12px Verdana, sans-serif';
                 ctx.fillStyle = 'black';
                 // Draw the tree name next to the dot.
                 wrapText(ctx, tree.cultivar, 0, 0, 80, 10);

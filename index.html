@@ -11,6 +11,10 @@
 
 <body>
     <div id="container">
+        <div id="canvasContainer">
+            <canvas id="orchardCanvas" width="500" height="1000"></canvas>
+            <div id="hoverInfo"></div>
+        </div>
         <div id="treeContainer">
             <div id="treeDetails"></div>
             <button id="makeNoteButton" class="button"><span>Make a note</span></button>
@@ -19,10 +23,7 @@
                     tabindex="-1">Loading…</iframe>
             </div>
         </div>
-        <div id="canvasContainer">
-            <canvas id="orchardCanvas" width="500" height="1000"></canvas>
-            <div id="hoverInfo"></div>
-        </div>
+       
     </div>
     <script src="textUtils.js"></script>
     <script>

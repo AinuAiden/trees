@@ -33,6 +33,7 @@ body {
 
 #canvasContainer {
     position: relative;
+    padding: 10px;
 }
 
 #orchardCanvas {

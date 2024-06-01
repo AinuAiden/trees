@@ -72,10 +72,6 @@ body {
     width: 100%;
 }
 
-#hoverInfo {
-    font-size: 12px;
-}
-
 .button {
     border-radius: 4px;
     background-color: green;
@@ -122,10 +118,6 @@ body {
 
     #container {
         flex-direction: column;
-    }
-
-    #hoverInfo {
-        display: none;
     }
 
 }

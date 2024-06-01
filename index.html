@@ -94,10 +94,21 @@
                 ctx.translate(tree.x-5, tree.y); // Move the origin to the tree's position
                 ctx.rotate(Math.PI / 4); // Rotate the context by 45 degrees
                 ctx.font = '12px Verdana, sans-serif';
+                if (tree.id === selectedTreeId) {
+                    ctx.font = '14px Verdana, sans-serif';
+                }
                 ctx.fillStyle = 'black';
+
                 // Draw the tree name next to the dot.
-                wrapText(ctx, tree.cultivar, 0, 0, 80, 10);
+                wrapText(ctx, tree.cultivar, 0, 0, 80, 11);
+                
                 ctx.restore(); // Restore the context to its state before we moved the origin and rotated it
+                
+                if (tree.id === selectedTreeId) {
+                    ctx.fillStyle = 'black';
+                    ctx.font = '16px Verdana, sans-serif';
+                    ctx.fillText("ID: "+tree.id, canvas.width-100, 16);
+                }
             });
         }
         function getMousePos(canvas, evt) {

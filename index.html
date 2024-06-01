@@ -46,7 +46,7 @@
         let selectedTreeId = null;
 
         class Tree {
-            constructor(x, y, id, cultivar, rootstock, grade, grafter, graftType, grafteDate, nurseryDate, graftComment) {
+            constructor(x, y, id, cultivar, rootstock, grade, grafter, graftType, grafteDate, nurseryDate, graftComment,orchardDate) {
                 this.x = canvas.width - (x * MAP_SCALE + PADDING);
                 this.y = (y + 30) * MAP_SCALE;
                 this.id = id;
@@ -58,6 +58,7 @@
                 this.grafteDate = grafteDate;
                 this.nurseryDate = nurseryDate;
                 this.graftComment = graftComment;
+                this.orchardDate = orchardDate;
 
                 if (this.cultivar === "#N/A") {
                     this.cultivar = "";
@@ -149,10 +150,14 @@
                 <p><strong>Cultivar:</strong> ${tree.cultivar}<br>
                 <strong>Rootstock:</strong> ${tree.rootstock}<br>
                 <strong>Grade:</strong> ${tree.grade}<br>
+                <strong>Planted in Orchard:</strong> ${tree.orchardDate}<br>
+                </p>
+                <p>
                 <strong>Grafter:</strong> ${tree.grafter}<br>
-                <strong>Date:</strong> ${tree.grafteDate}<br>
-                <strong>Type:</strong> ${tree.graftType}<br>
+                <strong>Graft Date:</strong> ${tree.grafteDate}<br>
+                <strong>Graft Method:</strong> ${tree.graftType}<br>
                 ${tree.graftComment ? "<strong>Comment: </strong>" + tree.graftComment + "<br>" : ""}
+                
                 </p>
                 ${notesHTML ? "<h2>Notes</h2>" : ""}
                 ${notesHTML}
@@ -190,7 +195,7 @@
 
         function fetchTreeData() {
             const sheetId = '1boH22hYT8um6i3UyCf33GHJVZmnFic-k5TZsQmfNrHY';
-            const sheetRange = 'map!A2:K';
+            const sheetRange = 'map!A2:L';
             const apiKey = 'AIzaSyBs9Du6hrji1fMUaUcbAy7nviu7EssKkV0';
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetRange}?key=${apiKey}`;
 
@@ -209,7 +214,8 @@
                         row[8],
                         row[9],
                         row[10],
-                        row[11] || ''
+                        row[11],
+                        row[12] || ''
                     ));
                     drawTrees();
                     fetchNotes();

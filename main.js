@@ -1,3 +1,4 @@
+//main.js
 const MAP_SCALE = 3.3;
 const PADDING = 60;
 const canvas = document.getElementById('orchardCanvas');
@@ -56,6 +57,7 @@ function initialize() {
         if (selectedTree) {
             displayTreeDetails(selectedTree);
         } else {
+            noteFormContainer.style.display = 'none';
             treeDetailsDiv.innerHTML = 'Tree not found.';
         }
     } else {

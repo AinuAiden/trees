@@ -29,6 +29,7 @@ body {
 #noteFormContainer {
     margin-bottom: 20px;
     width: 100%;
+    display: none;
 }
 
 #noteFormContainer iframe {

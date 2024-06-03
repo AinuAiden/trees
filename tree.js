@@ -29,7 +29,7 @@ class Tree {
         this.getNotes().forEach(note => notesHTML += note.getNoteHTML());
         return `
                 <h2>${this.cultivar} [${this.id}]</h2>
-                <p><strong>Cultivar:</strong> ${this.cultivar}<br>
+                <p>
                 <strong>Rootstock:</strong> ${this.rootstock}<br>
                 <strong>Grade:</strong> ${this.grade}<br>
                 <strong>Planted in Orchard:</strong> ${this.orchardDate}<br>

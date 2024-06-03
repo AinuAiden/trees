@@ -30,7 +30,7 @@
             <button id="makeNoteButton" class="button"><span>Make a note</span></button>
             <img id="treeImage" src="" alt="Tree image">
             <img id="treeImageNight" src="" alt="Tree at night">
-            
+
             <div id="noteFormContainer">
                 <iframe id="googleForm" src="" frameborder="0" marginheight="0" marginwidth="0"
                     tabindex="-1">Loading…</iframe>
@@ -42,6 +42,14 @@
     <script src="note.js"></script>
     <script src="tree.js"></script>
     <script src="main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            document.querySelectorAll('img').forEach(function (img) {
+                img.onerror = function () { this.style.display = 'none'; };
+                img.onload = function () { this.style.display = 'block'; };
+            })
+        });
+    </script>
 </body>
 
 </html>

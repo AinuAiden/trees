@@ -120,7 +120,7 @@ function fetchTreeData() {
 
 function fetchNotes() {
     const sheetId = '1dH1oBXTx4CtOVU8jE7PhWrfM7iSyzekNAeW7QaOXcFc';
-    const sheetRange = 'notes!A2:D';
+    const sheetRange = 'notes!A2:E';
     const apiKey = 'AIzaSyBs9Du6hrji1fMUaUcbAy7nviu7EssKkV0';
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetRange}?key=${apiKey}`;
 
@@ -131,7 +131,8 @@ function fetchNotes() {
                 row[0],
                 row[1],
                 row[2],
-                row[3] || ''
+                row[3],
+                row[4] || ''
             ));
             
             initialize();

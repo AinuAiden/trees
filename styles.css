@@ -73,15 +73,6 @@ body {
     height: auto;
 }
 
-#hoverInfo {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 5px;
-    display: none;
-    pointer-events: none;
-}
-
 #treeContainer,
 #canvasContainer {
     width: 100%;
@@ -103,6 +94,16 @@ body {
 #treeImageNight {
     width: 100%;
     padding: 10px;
+}
+
+.noteTag {
+    width: fit-content;
+    padding: 5px;
+    border-radius: 30px;
+    background-color:#74d48c;
+    border:none;
+    color:white;
+    text-align: center;
 }
 
 

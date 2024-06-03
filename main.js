@@ -35,6 +35,13 @@ function displayTreeDetails(tree) {
     noteFormContainer.style.display = 'none'; // Hide note form initially
     makeNoteButton.style.display = 'block';
     drawTrees();
+
+    // Set the source of the images
+    const treeImage = document.getElementById('treeImage');
+    treeImage.src = `photos/June 2, 2024/day/${tree.id}.jpg`;
+
+    const treeImageNight = document.getElementById('treeImageNight');
+    treeImageNight.src = `photos/June 2, 2024/night/${tree.id}.jpg`;
 }
 
 function updateURLParameter(treeId) {
